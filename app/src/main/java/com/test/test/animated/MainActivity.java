@@ -37,6 +37,9 @@ import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
+import com.google.android.gms.ads.reward.RewardItem;
+import com.google.android.gms.ads.reward.RewardedVideoAd;
+import com.google.android.gms.ads.reward.RewardedVideoAdListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +47,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener{
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, RewardedVideoAdListener {
 
     private Vibrator v;
     private CountDownTimer curntTimer;
@@ -56,17 +59,22 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private int duration_vibrate;
     private int cnt_hint_number = 0;
     private String color_name;
+    private int numClick;
+    private int allNumClick;
 
 
     private TableLayout tableLayout;
     private TextView cnt_hint_text;
     private TextView menuBtn;
+    private TextView menuBtn2;
     private LinearLayout linearLayout;
+
 
     private Dialog dialogMainMenu;
     private Dialog styleDialog;
 
     private AdView mAdView;
+    private RewardedVideoAd mRewarderVideoAd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -75,7 +83,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         v = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
 
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
 
+        numClick = 0;
+        allNumClick = prefs.getInt("all_click", 0);
 
         tableLayout = findViewById(R.id.table);
         cnt_hint_text = findViewById(R.id.cnt_hint);
@@ -94,13 +105,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        menuBtn2 = findViewById(R.id.menuBtn2);
+        menuBtn2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showStyleDialog();
+            }
+        });
+
+
         duration_vibrate = prefs.getInt("duration_vibrate", 25);
 
         MobileAds.initialize(this, "ca-app-pub-8505706241717212~5395127293");
 
+        loadRewardedVideoAd();
+
         mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().addTestDevice("AA6A32E3DAB63751E5ED3035550DF5D1").build();
+        AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
 
         mAdView.setAdListener(new AdListener() {
@@ -151,6 +172,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         };
     }
 
+
     private void mainMenuDialogShow(int i){
         dialogMainMenu = new Dialog(MainActivity.this);
         View view1 = View.inflate( this, R.layout.menu_dialog, null);
@@ -178,8 +200,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 btnStyle.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.buttonshape));
 
                 Button btnAboutUs = new Button(this);
-                btnAboutUs.setText("About us");
+                btnAboutUs.setText("About");
                 btnAboutUs.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.buttonshape));
+
+                Button btnInfo = new Button(this);
+                btnInfo.setText("Information");
+                btnInfo.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.buttonshape));
 
                 Button btnRateUs = new Button(this);
                 btnRateUs.setText("Rate us");
@@ -196,6 +222,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(View view) {
                         showAboutUs();
+                    }
+                });
+
+                btnInfo.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        showInfo();
                     }
                 });
 
@@ -223,6 +256,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                         btnAboutUs, new LinearLayout.LayoutParams(
                                 LinearLayout.LayoutParams.WRAP_CONTENT,
                                 LinearLayout.LayoutParams.WRAP_CONTENT)
+                );
+                linearLayout.addView(
+                        btnInfo, new LinearLayout.LayoutParams(
+                                LinearLayout.LayoutParams.WRAP_CONTENT,
+                                LinearLayout.LayoutParams.WRAP_CONTENT
+                        )
                 );
                 linearLayout.addView(
                         btnRateUs, new LinearLayout.LayoutParams(
@@ -266,6 +305,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         dialogMainMenu.setContentView(linearLayout);
         dialogMainMenu.show();
+    }
+
+    private void showInfo(){
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        Dialog dialog = new Dialog(MainActivity.this);
+        View view = View.inflate(this, R.layout.info_dialog, null);
+        dialog.setContentView(view);
+        TextView alltimeClickedTextView = view.findViewById(R.id.allTimeClickedTextView);
+        TextView alltimeSelectedColorTextView = view.findViewById(R.id.allTimeSelectedColorTextView);
+        TextView alltimeSelectedImageTextView = view.findViewById(R.id.allTimeSelectedImageTextView);
+
+        alltimeClickedTextView.append(Integer.toString(prefs.getInt("all_click", 0)));
+        alltimeSelectedColorTextView.append(Integer.toString(prefs.getInt("all_select_color", 0)));
+        alltimeSelectedImageTextView.append(Integer.toString(prefs.getInt("all_select_image", 0)));
+
+        dialog.show();
+
+
     }
 
     private void showStyleDialog(){
@@ -377,9 +434,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     private void showAboutUs(){
-        Dialog dialogAboutUs = new Dialog(MainActivity.this);
+        final Dialog dialogAboutUs = new Dialog(MainActivity.this);
         View view = View.inflate(this, R.layout.about_us, null);
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialogAboutUs.cancel();
+            }
+        });
         LinearLayout linearLayout = view.findViewById(R.id.linear_layout_about_us);
+        TextView textAboutUs = view.findViewById(R.id.textAboutUs);
+        textAboutUs.append("\n\nAll time clicked — " + allNumClick);
         //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
         AnimationDrawable animationDrawable = (AnimationDrawable) linearLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2000);
@@ -421,6 +486,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt("all_select_color", (pref.getInt("all_select_color", 0)) + 1 );
+                    editor.apply();
+
                     setNewColor(colorName);
                     drawTable();
                     styleDialog.cancel();
@@ -472,7 +542,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             image.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                   setNewImage(name, value[0], value[1]);
+                    SharedPreferences pref = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
+                    SharedPreferences.Editor editor = pref.edit();
+                    editor.putInt("all_select_image", (pref.getInt("all_select_image", 0)) + 1 );
+                    editor.apply();
+                    setNewImage(name, value[0], value[1]);
                    drawTable();
                    styleDialog.cancel();
                    dialogMainMenu.cancel();
@@ -513,9 +587,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int width = displayMetrics.widthPixels;
-        int height = displayMetrics.heightPixels - 150;
+        int height = displayMetrics.heightPixels - 300;
 
         BOOKSHELF_ROWS = (int) (height / (convertDpToPixels(Float.parseFloat(linkToImageSize), this) * (height_image / width_image)));
+
         BOOKSHELF_COLUMNS = width / convertDpToPixels(Float.parseFloat(linkToImageSize), this);
 
         Log.d("Test", "Columns: " + String.valueOf(BOOKSHELF_COLUMNS));
@@ -548,6 +623,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onClick(final View view) {
+        numClick++;
+        if (numClick == 10) {
+            if (mRewarderVideoAd.isLoaded()) {
+                mRewarderVideoAd.show();
+            }
+
+        }
+
         view.setOnClickListener(null);
         //Log.d("Test", "Click");
         cnt_hint_number++;
@@ -555,7 +638,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         v.vibrate(duration_vibrate);
         view.animate()
                 .alpha(0f)
-                .setDuration(300)
+                .setDuration(200)
                 .setListener(new AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(Animator animation) {
@@ -578,4 +661,89 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, context.getResources().getDisplayMetrics());
     }
 
+    @Override
+    protected void onStop() {
+
+        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        allNumClick = prefs.getInt("all_click", 0);
+        allNumClick = numClick + allNumClick;
+        numClick = 0;
+        SharedPreferences.Editor editor = prefs.edit();
+        editor.putInt("all_click", allNumClick);
+        editor.apply();
+        super.onStop();
+    }
+
+    @Override
+    public void onResume() {
+        mRewarderVideoAd.resume(this);
+        super.onResume();
+    }
+
+    @Override
+    public void onPause() {
+        mRewarderVideoAd.pause(this);
+        super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        mRewarderVideoAd.destroy(this);
+        super.onDestroy();
+    }
+
+
+
+
+    private void loadRewardedVideoAd() {
+        mRewarderVideoAd = MobileAds.getRewardedVideoAdInstance(this);
+        mRewarderVideoAd.setRewardedVideoAdListener(this);
+        mRewarderVideoAd.loadAd("ca-app-pub-8505706241717212/6163392753", new AdRequest.Builder().build());
+        //Test ad video mRewarderVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
+
+
+    }
+
+
+    @Override
+    public void onRewarded(RewardItem reward) {
+        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
+                reward.getAmount(), Toast.LENGTH_SHORT).show();
+        // Reward the user.
+    }
+
+    @Override
+    public void onRewardedVideoAdLeftApplication() {
+        Toast.makeText(this, "onRewardedVideoAdLeftApplication",
+                Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdClosed() {
+        Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdFailedToLoad(int errorCode) {
+        Toast.makeText(this, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdLoaded() {
+        Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoAdOpened() {
+        Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onRewardedVideoStarted() {
+        Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
+    }
+
+    private void showCryDialog(){
+
+    }
 }
