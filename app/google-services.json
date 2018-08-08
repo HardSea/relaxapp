@@ -1,0 +1,59 @@
+{
+  "project_info": {
+    "project_number": "520950576678",
+    "firebase_url": "https://calm-down-fce2c.firebaseio.com",
+    "project_id": "calm-down-fce2c",
+    "storage_bucket": "calm-down-fce2c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:520950576678:android:ba8ea0c02dd68979",
+        "android_client_info": {
+          "package_name": "com.test.test.animated"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "520950576678-ou22kj53c4va58qde1sp4nsserc6unjk.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.test.test.animated",
+            "certificate_hash": "68fb2220307dfbe13511bdb1fa40d8c2cd645381"
+          }
+        },
+        {
+          "client_id": "520950576678-ckjp57ev923svsn7b8fo0v76rn1f932a.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "520950576678-ckjp57ev923svsn7b8fo0v76rn1f932a.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCHLn5N9sSt694JvvycNbmqGuokuVguCtk"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "520950576678-ckjp57ev923svsn7b8fo0v76rn1f932a.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
