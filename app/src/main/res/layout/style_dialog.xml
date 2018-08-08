@@ -57,7 +57,8 @@
             android:id="@+id/seekBar_size"
             android:layout_width="160dp"
             android:layout_height="wrap_content"
-            android:max="90" />
+            android:theme="@style/Widget.AppCompat.SeekBar.Discrete"
+            android:max="3" />
 
     </LinearLayout>
 

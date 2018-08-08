@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
+                                                                                             showCryDialog();
 
         duration_vibrate = prefs.getInt("duration_vibrate", 25);
 
@@ -123,39 +124,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mAdView = findViewById(R.id.adView);
         AdRequest adRequest = new AdRequest.Builder().build();
         mAdView.loadAd(adRequest);
-
-        mAdView.setAdListener(new AdListener() {
-            @Override
-            public void onAdLoaded() {
-                // Code to be executed when an ad finishes loading.
-                            Log.d("Test", "onAdLoaded");
-            }
-
-            @Override
-            public void onAdFailedToLoad(int errorCode) {
-                // Code to be executed when an ad request fails.
-                Log.d("Test", "Code error: " + String.valueOf(errorCode));
-            }
-
-            @Override
-            public void onAdOpened() {
-                // Code to be executed when an ad opens an overlay that
-                // covers the screen.
-            }
-
-            @Override
-            public void onAdLeftApplication() {
-                // Code to be executed when the user has left the app.
-            }
-
-            @Override
-            public void onAdClosed() {
-                // Code to be executed when when the user is about to return
-                // to the app after tapping on an ad.
-               Log.d("Test", "onAdClosed");
-            }
-        });
-
 
         drawTable();
         curntTimer = new CountDownTimer(3000, 1000) {
@@ -357,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
 
         SeekBar seekBarSize = view.findViewById(R.id.seekBar_size);
-        seekBarSize.setProgress(Integer.parseInt(linkToImageSize) - 30);
+        seekBarSize.setProgress(Integer.parseInt(linkToImageSize) / 30 - 1);
         seekBarSize.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener() {
             @Override
             public void onProgressChanged(SeekBar seekBar, int i, boolean b) {
@@ -372,16 +340,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             @Override
             public void onStopTrackingTouch(SeekBar seekBar) {
                 int sizeImg = seekBar.getProgress();
-                if (sizeImg < 30){
+                if (sizeImg < 1){
                     editor.putString("link_to_image_size", "30");
                     linkToImageSize = "30";
-                } else if (sizeImg >= 30 && sizeImg < 60){
+                } else if (sizeImg >= 1 && sizeImg < 2){
                     editor.putString("link_to_image_size", "60");
                     linkToImageSize = "60";
-                } else if (sizeImg >= 60 && sizeImg < 90){
+                } else if (sizeImg >= 2 && sizeImg < 3){
                     editor.putString("link_to_image_size", "90");
                     linkToImageSize = "90";
-                } else if (sizeImg >= 90){
+                } else if (sizeImg >= 3){
                     editor.putString("link_to_image_size", "120");
                     linkToImageSize = "120";
                 }
@@ -593,8 +561,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         BOOKSHELF_COLUMNS = width / convertDpToPixels(Float.parseFloat(linkToImageSize), this);
 
-        Log.d("Test", "Columns: " + String.valueOf(BOOKSHELF_COLUMNS));
-        Log.d("Test", "Rows: " + String.valueOf(BOOKSHELF_ROWS));
+        //Log.d("Test", "Columns: " + String.valueOf(BOOKSHELF_COLUMNS));
+        //Log.d("Test", "Rows: " + String.valueOf(BOOKSHELF_ROWS));
 
 
 
@@ -621,12 +589,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+
     @Override
     public void onClick(final View view) {
         numClick++;
-        if (numClick == 10) {
-            if (mRewarderVideoAd.isLoaded()) {
-                mRewarderVideoAd.show();
+
+        //every 125-th click with 40% chance show ad
+        if (numClick % 125 == 0) {
+            double rand = Math.random();
+            Log.d("Test", "Show AD. Chance: " + rand);
+            if (rand <= 0.4) {
+                if (mRewarderVideoAd.isLoaded()) {
+                    mRewarderVideoAd.show();
+                    loadRewardedVideoAd();
+                }
             }
 
         }
@@ -707,43 +683,48 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRewarded(RewardItem reward) {
-        Toast.makeText(this, "onRewarded! currency: " + reward.getType() + "  amount: " +
-                reward.getAmount(), Toast.LENGTH_SHORT).show();
-        // Reward the user.
+        Toast.makeText(this, "Thanks for watching ad!", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoAdLeftApplication() {
-        Toast.makeText(this, "onRewardedVideoAdLeftApplication",
-                Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoAdClosed() {
-        Toast.makeText(this, "onRewardedVideoAdClosed", Toast.LENGTH_SHORT).show();
+        showCryDialog();
     }
 
     @Override
     public void onRewardedVideoAdFailedToLoad(int errorCode) {
-        Toast.makeText(this, "onRewardedVideoAdFailedToLoad", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoAdLoaded() {
-        Toast.makeText(this, "onRewardedVideoAdLoaded", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoAdOpened() {
-        Toast.makeText(this, "onRewardedVideoAdOpened", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onRewardedVideoStarted() {
-        Toast.makeText(this, "onRewardedVideoStarted", Toast.LENGTH_SHORT).show();
     }
 
     private void showCryDialog(){
+        final Dialog dialog = new Dialog(this);
+        View view = View.inflate(this, R.layout.cry_dialog, null);
+        dialog.setContentView(view);
+        dialog.show();
+        TextView cryTextView = view.findViewById(R.id.cryTextView);
+       // cryTextView.append("\nDon`t do this, please :(");
+        //cryTextView.append("\n\n");
+        view.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                dialog.cancel();
+            }
+        });
 
     }
 }
