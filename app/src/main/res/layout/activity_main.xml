@@ -11,7 +11,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
-        android:layout_marginTop="8dp"
+        android:layout_marginTop="4dp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -21,12 +21,13 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
+            android:fontFamily="@font/bigshot_one"
             android:paddingBottom="10dp"
             android:paddingLeft="15dp"
             android:paddingRight="25dp"
             android:paddingStart="15dp"
             android:paddingTop="10dp"
-            android:text="Menu"
+            android:text="@string/menu"
             android:textColor="#000000"
             android:textSize="18sp" />
 
@@ -37,12 +38,29 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_weight="1"
+            android:fontFamily="@font/bigshot_one"
             android:paddingBottom="10dp"
-            android:paddingLeft="15dp"
-            android:paddingRight="25dp"
-            android:paddingStart="15dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="0dp"
+            android:paddingStart="5dp"
             android:paddingTop="10dp"
-            android:text="Style"
+            android:text="@string/style"
+            android:textColor="#000000"
+            android:textSize="18sp" />
+
+        <TextView
+            android:id="@+id/menuBtn3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:layout_weight="1"
+            android:fontFamily="@font/bigshot_one"
+            android:paddingBottom="10dp"
+            android:paddingLeft="5dp"
+            android:paddingRight="0dp"
+            android:paddingStart="5dp"
+            android:paddingTop="10dp"
+            android:text="@string/information"
             android:textColor="#000000"
             android:textSize="18sp" />
 
@@ -55,12 +73,14 @@
             android:id="@+id/cnt_hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:fontFamily="@font/bigshot_one"
             android:paddingBottom="10dp"
-            android:paddingLeft="40dp"
+            android:paddingLeft="20dp"
             android:paddingRight="25dp"
-            android:paddingTop="15dp"
-            android:text="0"
-            android:textColor="#000000" />
+            android:paddingTop="10dp"
+            android:text="@string/score"
+            android:textColor="#000000"
+            android:textSize="18sp" />
 
     </LinearLayout>
 

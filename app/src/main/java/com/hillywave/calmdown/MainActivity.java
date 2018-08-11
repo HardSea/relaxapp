@@ -1,13 +1,12 @@
-package com.test.test.animated;
+package com.hillywave.calmdown;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.app.AlertDialog;
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
@@ -21,31 +20,31 @@ import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.SeekBar;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.MobileAds;
 import com.google.android.gms.ads.reward.RewardItem;
 import com.google.android.gms.ads.reward.RewardedVideoAd;
 import com.google.android.gms.ads.reward.RewardedVideoAdListener;
+import com.hillywave.calmdown.R;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
+import java.util.Timer;
+import java.util.TimerTask;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, RewardedVideoAdListener {
 
@@ -67,7 +66,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView cnt_hint_text;
     private TextView menuBtn;
     private TextView menuBtn2;
+    private TextView menuBtn3;
     private LinearLayout linearLayout;
+    private long currentTime;
+    private long currentTime2;
+    private Timer stopWatch;
 
 
     private Dialog dialogMainMenu;
@@ -113,7 +116,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             }
         });
 
-                                                                                             showCryDialog();
+        menuBtn3 = findViewById(R.id.menuBtn3);
+        menuBtn3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showInfo();
+            }
+        });
+
+        currentTime = System.currentTimeMillis();
+        currentTime2 = 0;
 
         duration_vibrate = prefs.getInt("duration_vibrate", 25);
 
@@ -122,7 +134,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         loadRewardedVideoAd();
 
         mAdView = findViewById(R.id.adView);
-        AdRequest adRequest = new AdRequest.Builder().build();
+        AdRequest adRequest = new AdRequest.Builder().addTestDevice("AA6A32E3DAB63751E5ED3035550DF5D1").build();
         mAdView.loadAd(adRequest);
 
         drawTable();
@@ -145,7 +157,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         dialogMainMenu = new Dialog(MainActivity.this);
         View view1 = View.inflate( this, R.layout.menu_dialog, null);
         linearLayout = view1.findViewById(R.id.linear_layout);
-        dialogMainMenu.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        Objects.requireNonNull(dialogMainMenu.getWindow()).setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
 
         //linearLayout.setBackgroundColor(Color.TRANSPARENT);
 
@@ -157,26 +169,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
                 Button btnResume = new Button(this);
-                btnResume.setText("Resume");
+                btnResume.setText(R.string.menu_text_resume);
                 //btnResume.setWidth(270);
                 //btnResume.setHeight(60);
                 btnResume.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.buttonshape));
 
 
                 Button btnStyle = new Button(this);
-                btnStyle.setText("Set Style");
+                btnStyle.setText(R.string.menu_text_setstyle);
                 btnStyle.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.buttonshape));
 
                 Button btnAboutUs = new Button(this);
-                btnAboutUs.setText("About");
+                btnAboutUs.setText(R.string.menu_text_about);
                 btnAboutUs.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.buttonshape));
 
                 Button btnInfo = new Button(this);
-                btnInfo.setText("Information");
+                btnInfo.setText(R.string.menu_text_information);
                 btnInfo.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.buttonshape));
 
                 Button btnRateUs = new Button(this);
-                btnRateUs.setText("Rate us");
+                btnRateUs.setText(R.string.menu_text_rateus);
                 btnRateUs.setBackground(ContextCompat.getDrawable(getApplicationContext(), R.drawable.buttonshape));
 
                 btnResume.setOnClickListener(new View.OnClickListener() {
@@ -243,7 +255,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case 2:// cnt of hints
                 Button btnReset = new Button(this);
-                btnReset.setText("Reset");
+                btnReset.setText(R.string.menu_text_reset);
 
 
                 btnReset.setOnClickListener(new View.OnClickListener() {
@@ -279,14 +291,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         Dialog dialog = new Dialog(MainActivity.this);
         View view = View.inflate(this, R.layout.info_dialog, null);
+        LinearLayout linearLayout = view.findViewById(R.id.linear_layout_info);
+        AnimationDrawable animationDrawable = (AnimationDrawable) linearLayout.getBackground();
+        animationDrawable.setEnterFadeDuration(2000);
+        animationDrawable.setExitFadeDuration(4000);
+        animationDrawable.start();
         dialog.setContentView(view);
         TextView alltimeClickedTextView = view.findViewById(R.id.allTimeClickedTextView);
         TextView alltimeSelectedColorTextView = view.findViewById(R.id.allTimeSelectedColorTextView);
         TextView alltimeSelectedImageTextView = view.findViewById(R.id.allTimeSelectedImageTextView);
+        TextView alltimeSelectedImageSizeTextView = view.findViewById(R.id.allTimeSelectedImageSizeTextView);
+        TextView alltimeSelectedVibrationTextView = view.findViewById(R.id.allTimeSelectedVibrationTextView);
+        TextView alltimeInAppTextView = view.findViewById(R.id.allTimeInAppTextView);
 
-        alltimeClickedTextView.append(Integer.toString(prefs.getInt("all_click", 0)));
+
+        alltimeClickedTextView.append(Integer.toString(prefs.getInt("all_click", 0) + numClick));
         alltimeSelectedColorTextView.append(Integer.toString(prefs.getInt("all_select_color", 0)));
         alltimeSelectedImageTextView.append(Integer.toString(prefs.getInt("all_select_image", 0)));
+        alltimeSelectedImageSizeTextView.append(Integer.toString(prefs.getInt("all_select_image_size", 0)));
+        alltimeSelectedVibrationTextView.append(Integer.toString(prefs.getInt("all_select_vibration", 0)));
+
+        long time = prefs.getLong("all_time_in_app",0) + currentTime2;
+        long hours = time / 3600;
+        long minutes = time / 60;
+
+        @SuppressLint("DefaultLocale") String curTime = String.format("%02d : %02d", hours, minutes);
+
+        alltimeInAppTextView.append(curTime);
+
 
         dialog.show();
 
@@ -295,7 +327,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void showStyleDialog(){
 
-        SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        final SharedPreferences prefs = PreferenceManager.getDefaultSharedPreferences(this);
         final SharedPreferences.Editor editor = prefs.edit();
         linkToImage = prefs.getString("link_to_image", "ic_launcher_foreground");
         linkToImageSize = prefs.getString("link_to_image_size", "30");
@@ -353,6 +385,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     editor.putString("link_to_image_size", "120");
                     linkToImageSize = "120";
                 }
+                editor.putInt("all_select_image_size", prefs.getInt("all_select_image_size", 0) + 1);
                 editor.apply();
                 styleDialog.cancel();
                 showStyleDialog();
@@ -379,6 +412,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 v.vibrate(duration);
                 duration_vibrate = duration;
                 editor.putInt("duration_vibrate", duration);
+                editor.putInt("all_select_vibration", prefs.getInt("all_select_vibration", 0) + 1);
                 editor.apply();
 
             }
@@ -412,7 +446,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         });
         LinearLayout linearLayout = view.findViewById(R.id.linear_layout_about_us);
         TextView textAboutUs = view.findViewById(R.id.textAboutUs);
-        textAboutUs.append("\n\nAll time clicked — " + allNumClick);
+        textAboutUs.append(getString(R.string.aboutus_text) + (allNumClick + numClick));
         //LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(100, 100);
         AnimationDrawable animationDrawable = (AnimationDrawable) linearLayout.getBackground();
         animationDrawable.setEnterFadeDuration(2000);
@@ -595,7 +629,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         numClick++;
 
         //every 125-th click with 40% chance show ad
-        if (numClick % 125 == 0) {
+        if (numClick % 100 == 0) {
             double rand = Math.random();
             Log.d("Test", "Show AD. Chance: " + rand);
             if (rand <= 0.4) {
@@ -646,6 +680,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         numClick = 0;
         SharedPreferences.Editor editor = prefs.edit();
         editor.putInt("all_click", allNumClick);
+        editor.putLong("all_time_in_app", prefs.getLong("all_time_in_app", 0) + currentTime2);
+        currentTime2 = 0;
+        stopWatch.cancel();
+
         editor.apply();
         super.onStop();
     }
@@ -663,9 +701,26 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
+    protected void onStart() {
+        super.onStart();
+        stopWatch = new Timer();
+        stopWatch.schedule(new TimerTask() {
+            @Override
+            public void run() {
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        currentTime2++;
+                    }
+                });
+            }
+        }, 1000, 1000);
+    }
+
+    @Override
     public void onDestroy() {
-        mRewarderVideoAd.destroy(this);
         super.onDestroy();
+        mRewarderVideoAd.destroy(this);
     }
 
 
@@ -676,14 +731,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mRewarderVideoAd.setRewardedVideoAdListener(this);
         mRewarderVideoAd.loadAd("ca-app-pub-8505706241717212/6163392753", new AdRequest.Builder().build());
         //Test ad video mRewarderVideoAd.loadAd("ca-app-pub-3940256099942544/5224354917", new AdRequest.Builder().build());
-
-
     }
 
 
     @Override
     public void onRewarded(RewardItem reward) {
-        Toast.makeText(this, "Thanks for watching ad!", Toast.LENGTH_SHORT).show();
+        Toast.makeText(this, R.string.thanks_ad_text, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -716,9 +769,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         View view = View.inflate(this, R.layout.cry_dialog, null);
         dialog.setContentView(view);
         dialog.show();
-        TextView cryTextView = view.findViewById(R.id.cryTextView);
-       // cryTextView.append("\nDon`t do this, please :(");
-        //cryTextView.append("\n\n");
         view.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {

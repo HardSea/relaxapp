@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:520950576678:android:ba8ea0c02dd68979",
         "android_client_info": {
-          "package_name": "com.test.test.animated"
+          "package_name": "com.hillywave.calmdown"
         }
       },
       "oauth_client": [
@@ -18,7 +18,7 @@
           "client_id": "520950576678-ou22kj53c4va58qde1sp4nsserc6unjk.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.test.test.animated",
+            "package_name": "com.hillywave.calmdown",
             "certificate_hash": "68fb2220307dfbe13511bdb1fa40d8c2cd645381"
           }
         },

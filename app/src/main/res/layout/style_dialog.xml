@@ -18,8 +18,9 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="10dp"
+            android:fontFamily="@font/bigshot_one"
             android:gravity="center"
-            android:text="Click to set:" />
+            android:text="@string/style_dialog_text_1" />
     <ImageButton
         android:id="@+id/imgbtn"
         android:layout_width="160dp"
@@ -38,7 +39,9 @@
                 android:layout_height="wrap_content"
                 android:layout_margin="5dp"
                 android:layout_weight="1"
-                android:text="Set Color:" />
+                android:fontFamily="@font/bigshot_one"
+                android:text="@string/style_dialog_text_2"
+                android:textColor="@color/black"/>
 
             <View
                 android:id="@+id/set_color_view"
@@ -49,9 +52,11 @@
         </LinearLayout>
 
         <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Size"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bigshot_one"
+            android:text="@string/style_dialog_text_3"
+            android:textColor="@color/black"/>
 
         <SeekBar
             android:id="@+id/seekBar_size"
@@ -69,10 +74,13 @@
         android:orientation="vertical"
         android:layout_gravity="center"
         android:gravity="center">
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Duration of vibrate:"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/bigshot_one"
+            android:text="@string/style_dialog_text_4"
+            android:textColor="@color/black"/>
     <SeekBar
         android:id="@+id/seekBar_durationVibrate"
         android:layout_width="160dp"

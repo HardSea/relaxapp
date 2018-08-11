@@ -16,7 +16,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_gravity="center"
-        android:fontFamily="monospace"
+        android:fontFamily="@font/bigshot_one"
         android:gravity="center"
         android:text="@string/description_app"
         android:textColor="@android:color/black"

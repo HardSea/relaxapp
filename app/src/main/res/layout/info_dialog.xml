@@ -1,42 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android" android:layout_width="match_parent"
-    android:orientation="vertical"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/linear_layout_info"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_gravity="center"
-    android:gravity="center"
     android:background="@drawable/android_gradient_list_2"
+    android:gravity="center"
+    android:orientation="vertical"
     android:paddingBottom="50dp"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="50dp"
-    >
+    android:paddingTop="50dp">
 
     <TextView
         android:id="@+id/allTimeClickedTextView"
-        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="All time clicked: "/>
+        android:fontFamily="@font/bigshot_one"
+        android:text="@string/info_text_1"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/allTimeSelectedColorTextView"
-        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="All time selected color: "/>
+        android:fontFamily="@font/bigshot_one"
+        android:text="@string/info_text_2"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
     <TextView
         android:id="@+id/allTimeSelectedImageTextView"
-        android:textColor="@color/black"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="20sp"
-        android:text="All time selected image: "/>
+        android:fontFamily="@font/bigshot_one"
+        android:text="@string/info_text_3"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/allTimeSelectedImageSizeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bigshot_one"
+        android:text="@string/info_text_4"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
+    <TextView
+        android:id="@+id/allTimeSelectedVibrationTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bigshot_one"
+        android:text="@string/info_text_5"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/allTimeInAppTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/bigshot_one"
+        android:paddingTop="15dp"
+        android:text="@string/info_text_6"
+        android:textColor="@color/black"
+        android:textSize="20sp" />
 
 
 </LinearLayout>

@@ -13,12 +13,14 @@
         android:src="@drawable/cat" />
 
     <TextView
+        android:padding="10dp"
         android:id="@+id/cryTextView"
-        android:gravity="center"
-        android:layout_gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
-        android:textColor="@color/black"
-        android:text="@string/cry_text" />
+        android:layout_gravity="center"
+        android:fontFamily="@font/bigshot_one"
+        android:gravity="center"
+        android:text="@string/cry_text"
+        android:textColor="@color/black" />
 
 </LinearLayout>

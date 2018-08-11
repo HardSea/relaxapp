@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Успокойся!</string>
+    <string name="description_app">Успокойся! - это простая программа, которая помогает расслабиться в трудное время и помогает хорошо провести время. Если у вас есть какие-либо вопросы или предложени, свяжитесь с нами: \nEmail: hardsea17@gmail.com\n\n</string>
+    <string name="cry_text">Извините, если вам надоела реклама. Но мы хотим есть. Мы начинающие разработчики и хотим развиваться. Но для этого нам нужны деньги. И когда вы закрываете одно объявление, в мире плачет один голодный разработчик. \nНе делайте этого, пожалуйста :( \n\nЕсли у вас есть какие-либо вопросы или предложения, пожалуйста, свяжитесь с нами: Электронная почта: hardsea17@gmail.com</string>
+    <string name="style_dialog_text_3">Размер</string>
+    <string name="style_dialog_text_4">Длительность вибрации</string>
+    <string name="style_dialog_text_2">Выбрать цвет:</string>
+    <string name="style_dialog_text_1">Нажмите чтобы изменить:</string>
+    <string name="info_text_6">Общее время:</string>
+    <string name="info_text_5">Изменено вибраций:</string>
+    <string name="info_text_4">Выбрано размеров:</string>
+    <string name="info_text_3">Выбрано изображений:</string>
+    <string name="info_text_2">Выбрано цветов:</string>
+    <string name="info_text_1">Кликов:</string>
+    <string name="information">Информация</string>
+    <string name="style">Стиль</string>
+    <string name="menu">Меню</string>
+    <string name="thanks_ad_text">Спасибо за просмотр!</string>
+    <string name="aboutus_text">"Нажатий за всё время — "</string>
+    <string name="menu_text_rateus">Оценить нас</string>
+    <string name="menu_text_reset">Сбросить</string>
+    <string name="menu_text_information">Информация</string>
+    <string name="menu_text_about">О нас</string>
+    <string name="menu_text_setstyle">Стиль</string>
+    <string name="menu_text_resume">Продолжить</string>
+</resources>
