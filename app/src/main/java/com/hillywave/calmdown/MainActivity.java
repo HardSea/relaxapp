@@ -6,10 +6,12 @@ import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.AnimationDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.CountDownTimer;
 import android.os.Vibrator;
 import android.preference.PreferenceManager;
@@ -216,6 +218,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                     @Override
                     public void onClick(View view) {
                         showStyleDialog();
+                    }
+                });
+
+                btnRateUs.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.hillywave.calmdown")));
                     }
                 });
 
@@ -518,16 +527,27 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Map<String, String[]> allImgMassive;
         allImgMassive = new LinkedHashMap<>();
         String[] a = new String[2];
-        a[0] = "1"; a[1] = "1";      allImgMassive.put("ic_launcher_foreground", a);
-        a[0] = "1"; a[1] = "1";      allImgMassive.put("mem_ded", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("sad_frog", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("bird", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("twitter", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("apple", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("heart", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("broken_heart", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("trollface", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("fourchan", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("dog_meme", a);
         a[0] = "1"; a[1] = "1";      allImgMassive.put("bellisimo", a);
         a[0] = "1"; a[1] = "1";      allImgMassive.put("meme_blin", a);
         a[0] = "1"; a[1] = "1";      allImgMassive.put("black_cat_icon", a);
         a[0] = "1"; a[1] = "1";      allImgMassive.put("sonya_swarm_cat", a);
-        a[0] = "1"; a[1] = "1";      allImgMassive.put("sad_frog", a);
         a[0] = "1"; a[1] = "1";      allImgMassive.put("dog", a);
         a[0] = "1"; a[1] = "1";      allImgMassive.put("digital_resistance", a);
         a[0] = "1"; a[1] = "1";      allImgMassive.put("dog_second", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("sonik", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("shifer", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("ic_launcher_foreground", a);
+        a[0] = "1"; a[1] = "1";      allImgMassive.put("mem_ded", a);
+
 
 
         dialogMainMenu = new Dialog(MainActivity.this);
