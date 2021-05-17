@@ -10,6 +10,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
+		<meta-data
+			android:name="com.google.android.gms.ads.APPLICATION_ID"
+			android:value="ca-app-pub-8505706241717212~5395127293"/>
         <activity android:name="com.hillywave.calmdown.MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
